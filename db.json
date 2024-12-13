@@ -1,0 +1,122 @@
+{
+  "products": [
+    {
+      "title": "Floral print crepe belted dress",
+      "price": "$99.95",
+      "mainImage": "./project-dress-images/main-image.jpg",
+      "necklineTemplates": [
+        {
+          "id": "neckline-as-shown",
+          "title": "Spread collar",
+          "position": "neckline",
+          "resultUrl": "/project-dress-images/CL0100493-Neckline-As-Shown.jpg"
+        },
+        {
+          "id": "neckline-peter-pan",
+          "title": "Peter Pan",
+          "position": "neckline",
+          "templateUrl": "./project-dress-images/Peter Pan.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Neckline-Peter Pan.jpg"
+        },
+        {
+          "id": "neckline-mandarin-collar",
+          "title": "Mandarin Collar",
+          "position": "neckline",
+          "templateUrl": "/project-dress-images/Mandarin Collar.jpg",
+          "resultUrl": "/project-dress-images/CL0100493-Neckline-Mandarin Collar.jpg"
+        },
+        {
+          "id": "neckline-stand-collar",
+          "title": "Stand Collar",
+          "position": "neckline",
+          "templateUrl": "./project-dress-images/Stand Collar.jpg",
+          "resultUrl": "./project-dress-images//CL0100493-Neckline-Stand Collar.jpg"
+        },
+        {
+          "id": "neckline-round-collar",
+          "title": "Round Collar",
+          "position": "neckline",
+          "templateUrl": "./project-dress-images/Round Collar.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Neckline-Round Collar.jpg"
+        },
+        {
+          "id": "neckline-shawl-collar",
+          "title": "Shawl collar",
+          "position": "neckline",
+          "templateUrl": "./project-dress-images/Shawl collar.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Neckline-Shawl collar.jpg"
+        }
+      ],
+      "sleeveTemplates": [
+        {
+          "id": "sleeve-as-shown",
+          "position": "sleeve",
+          "title": "2 above the bracelet length sleeves",
+          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-As Shown_R.jpg",
+          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-As Shown_L.jpg"
+        },
+        {
+          "id": "sleeve-cut-in-shoulders",
+          "position": "sleeve",
+          "title": "Cut-in shoulders",
+          "templateUrl": "./project-dress-images/Cut-in shoulders.jpg",
+          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_R.jpg",
+          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_L.jpg"
+        },
+        {
+          "id": "sleeve-sleeveless",
+          "position": "sleeve",
+          "title": "Sleeveless",
+          "templateUrl": "./project-dress-images/Sleeveless.jpg",
+          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Sleeveless_R.jpg",
+          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Sleeveless_L.jpg"
+        },
+        {
+          "id": "sleeve-inset-cap",
+          "title": "Inset cap",
+          "position": "sleeve",
+          "templateUrl": "./project-dress-images/Inset cap.jpg",
+          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Inset cap_R.jpg",
+          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Inset cap_L.jpg"
+        },
+        {
+          "id": "sleeve-capsleeve",
+          "title": "Capsleeve",
+          "position": "sleeve",
+          "templateUrl": "./project-dress-images/Capsleeve.jpg",
+          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Capsleeve_R.jpg",
+          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Capsleeve_L.jpg"
+        }
+      ],
+      "lengthTemplates": [
+        {
+          "id": "length-as-shown",
+          "title": "4 above the ankle length",
+          "position": "length",
+          "resultUrl": "./project-dress-images/CL0100493-Length-As Shown.jpg"
+        },
+        {
+          "id": "length-short-dress-length",
+          "title": "Short dress length",
+          "position": "length",
+          "templateUrl": "./project-dress-images/Short dress length.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Length-Short dress length.jpg"
+        },
+        {
+          "id": "length-2-inch-above-ankle-length",
+          "title": "2 Inch Above Ankle Length",
+          "position": "length",
+          "templateUrl": "./project-dress-images/2-inches-above-ankle-length.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Length-2 Inch Above Ankle Length.jpg"
+        },
+        {
+          "id": "length-mini",
+          "title": "Mini",
+          "position": "length",
+          "templateUrl": "./project-dress-images/mini.jpg",
+          "resultUrl": "./project-dress-images/CL0100493-Length-Mini.jpg"
+        }
+      ]
+    }
+  ]
+}
