@@ -52,40 +52,50 @@
           "id": "sleeve-as-shown",
           "position": "sleeve",
           "title": "2 above the bracelet length sleeves",
-          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-As Shown_R.jpg",
-          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-As Shown_L.jpg"
+          "resultUrl": {
+            "resultUrlR": "./project-dress-images/CL0100493-SleeveType-As Shown_R.jpg",
+            "resultUrlL": "./project-dress-images/CL0100493-SleeveType-As Shown_L.jpg"
+          }
         },
         {
           "id": "sleeve-cut-in-shoulders",
           "position": "sleeve",
           "title": "Cut-in shoulders",
           "templateUrl": "./project-dress-images/Cut-in shoulders.jpg",
-          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_R.jpg",
-          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_L.jpg"
+          "resultUrl": {
+            "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_R.jpg",
+            "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Cut-in shoulders_L.jpg"
+          }
         },
         {
           "id": "sleeve-sleeveless",
           "position": "sleeve",
           "title": "Sleeveless",
           "templateUrl": "./project-dress-images/Sleeveless.jpg",
-          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Sleeveless_R.jpg",
-          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Sleeveless_L.jpg"
+          "resultUrl": {
+            "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Sleeveless_R.jpg",
+            "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Sleeveless_L.jpg"
+          }
         },
         {
           "id": "sleeve-inset-cap",
           "title": "Inset cap",
           "position": "sleeve",
           "templateUrl": "./project-dress-images/Inset cap.jpg",
-          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Inset cap_R.jpg",
-          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Inset cap_L.jpg"
+          "resultUrl": {
+            "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Inset cap_R.jpg",
+            "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Inset cap_L.jpg"
+          }
         },
         {
           "id": "sleeve-capsleeve",
           "title": "Capsleeve",
           "position": "sleeve",
           "templateUrl": "./project-dress-images/Capsleeve.jpg",
-          "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Capsleeve_R.jpg",
-          "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Capsleeve_L.jpg"
+          "resultUrl": {
+            "resultUrlR": "./project-dress-images/CL0100493-SleeveType-Capsleeve_R.jpg",
+            "resultUrlL": "./project-dress-images/CL0100493-SleeveType-Capsleeve_L.jpg"
+          }
         }
       ],
       "lengthTemplates": [

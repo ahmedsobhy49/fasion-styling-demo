@@ -10,42 +10,61 @@ async function fetchProduct() {
 function App() {
   const { data } = useQuery("product", fetchProduct);
 
+  // state to track whether customize modal is open or not
   const [isOpenCustomizeModal, setIsOpenCustomizeModal] = useState(false);
+
+  // state to track which style is active
   const [activeStyle, setActiveStyle] = useState({
     neckline: "",
-    sleeveR: "",
-    sleeveL: "",
+    sleeve: {
+      resultUrlR: "",
+      resultUrlL: "",
+    },
+    length: "",
+  });
+
+  // state to track which tamplate is active
+  const [activeTemplateIds, setActiveTemplateIds] = useState({
+    neckline: "",
+    sleeve: "",
     length: "",
   });
 
   function handleChangeStyle(id) {
     const propertyToChange = id.split("-")[0];
-    console.log(propertyToChange);
-    console.log(id);
 
-    console.log(
-      "url",
-      data.data[0]?.[`${propertyToChange}Templates`].find(
-        (template) => template.id === id
-      )?.resultUrl
-    );
+    // Update active template IDs
+    setActiveTemplateIds((prev) => ({
+      ...prev,
+      [propertyToChange]: id,
+    }));
 
-    setActiveStyle({
-      ...activeStyle,
+    // Update active style
+    setActiveStyle((prev) => ({
+      ...prev,
       [propertyToChange]: data.data[0]?.[`${propertyToChange}Templates`].find(
         (template) => template.id === id
       )?.resultUrl,
-    });
+    }));
   }
 
   // UseEffect to update state after data fetch
   useEffect(() => {
     if (data?.data?.[0]) {
+      const product = data.data[0];
       setActiveStyle({
-        neckline: data.data[0]?.necklineTemplates?.[0]?.resultUrl || "",
-        sleeveR: data.data[0]?.sleeveTemplates?.[0]?.resultUrlR || "",
-        sleeveL: data.data[0]?.sleeveTemplates?.[0]?.resultUrlL || "",
-        length: data.data[0]?.lengthTemplates?.[0]?.resultUrl || "",
+        neckline: product?.necklineTemplates?.[0]?.resultUrl || "",
+        sleeve: {
+          resultUrlR: product.sleeveTemplates?.[0]?.resultUrl.resultUrlR || "",
+          resultUrlL: product.sleeveTemplates?.[0]?.resultUrl.resultUrlL || "",
+        },
+        length: product.lengthTemplates?.[0]?.resultUrl || "",
+      });
+
+      setActiveTemplateIds({
+        neckline: product?.necklineTemplates?.[0]?.id || "",
+        sleeve: product?.sleeveTemplates?.[0]?.id || "",
+        length: product?.lengthTemplates?.[0]?.id || "",
       });
     }
   }, [data]);
@@ -66,7 +85,7 @@ function App() {
   console.log(data?.data);
   return (
     <section
-      className="max-w-6xl mx-auto flex justify-start gap-32 items-start py-32"
+      className="max-w-6xl mx-auto flex justify-start gap-32 items-start py-32 text-gray-500"
       onClick={handleCloseCustomizeModal}
     >
       {/* Product content */}
@@ -108,12 +127,18 @@ function App() {
                   </div>
                   {/* sleeve right  */}
                   <div className="absolute w-[148] h-[280px] left-[228.8px] top-0">
-                    <img src={activeStyle.sleeveR} className="h-full w-full" />
+                    <img
+                      src={activeStyle.sleeve.resultUrlR}
+                      className="h-full w-full"
+                    />
                   </div>
 
                   {/* sleeve left  */}
                   <div className=" absolute w-[160px] h-[280px] left-0 top-0">
-                    <img src={activeStyle.sleeveL} className="h-full w-full" />
+                    <img
+                      src={activeStyle.sleeve.resultUrlL}
+                      className="h-full w-full"
+                    />
                   </div>
                 </div>
                 {/* length  */}
@@ -130,25 +155,42 @@ function App() {
                 <p>Click to change Neckline</p>
                 <div className="flex items-center gap-4">
                   {data?.data[0].necklineTemplates?.map((necklineTemplate) => {
+                    const isActive =
+                      activeTemplateIds.neckline === necklineTemplate.id;
                     return (
                       <div
                         key={necklineTemplate.id}
                         className="h-12 w-12 cursor-pointer"
                       >
                         {!necklineTemplate.templateUrl ? (
-                          <p className="h-12 w-12 cursor-pointer bg-gray-100 text-xs flex justify-center items-center mr-24 ">
+                          <p
+                            className={`h-[50px] w-[50px] cursor-pointer bg-gray-100 text-xs flex justify-center items-center border  p-[.1rem] ${
+                              isActive
+                                ? "border-green-100"
+                                : "border-transparent"
+                            }`}
+                            onClick={() =>
+                              handleChangeStyle(necklineTemplate.id)
+                            }
+                          >
                             Default
                           </p>
                         ) : (
-                          <div>
+                          <div
+                            className={` w-[50px] h-[50px] first:ml-6 border  p-[.1rem] ${
+                              isActive
+                                ? " border-green-200"
+                                : "border-transparent"
+                            }`}
+                          >
                             <img
-                              src={necklineTemplate.templateUrl}
-                              className="h-full w-full first:ml-6"
+                              src={necklineTemplate?.templateUrl}
+                              className="h-full w-full  "
                               onClick={() =>
                                 handleChangeStyle(necklineTemplate.id)
                               }
                             />
-                            <p className="text-[0.5rem] text-center  ml-6 ">
+                            <p className="text-[0.5rem] text-center">
                               {necklineTemplate?.title}
                             </p>
                           </div>
@@ -163,25 +205,40 @@ function App() {
                 <p>Click to change Sleeve Type</p>
                 <div className="flex items-center gap-4">
                   {data?.data[0].sleeveTemplates?.map((sleeveTemplate) => {
+                    const isActive =
+                      activeTemplateIds.sleeve === sleeveTemplate.id;
                     return (
                       <div
                         key={sleeveTemplate.id}
                         className="h-12 w-12 cursor-pointer"
                       >
                         {!sleeveTemplate.templateUrl ? (
-                          <p className="h-12 w-12  cursor-pointer bg-gray-100 text-xs flex justify-center items-center">
+                          <p
+                            className={`h-[50px] w-[50px] cursor-pointer bg-gray-100 text-xs flex justify-center items-center border  p-[.1rem] ${
+                              isActive
+                                ? "border-green-100"
+                                : "border-transparent"
+                            }`}
+                            onClick={() => handleChangeStyle(sleeveTemplate.id)}
+                          >
                             Default
                           </p>
                         ) : (
-                          <div>
+                          <div
+                            className={` w-[50px] h-[50px] first:ml-6 border p-[.1rem] ${
+                              isActive
+                                ? " border-green-200"
+                                : "border-transparent"
+                            }`}
+                          >
                             <img
-                              src={sleeveTemplate.templateUrl}
-                              className="h-full w-full first:ml-6"
+                              src={sleeveTemplate?.templateUrl}
+                              className="h-full w-full  "
                               onClick={() =>
                                 handleChangeStyle(sleeveTemplate.id)
                               }
                             />
-                            <p className="text-[0.5rem] text-center  ml-6 ">
+                            <p className="text-[0.5rem] text-center">
                               {sleeveTemplate?.title}
                             </p>
                           </div>
@@ -196,25 +253,40 @@ function App() {
                 <p>Click to change Length</p>
                 <div className="flex items-center gap-4">
                   {data?.data[0].lengthTemplates?.map((lengthTemplate) => {
+                    const isActive =
+                      activeTemplateIds.length === lengthTemplate.id;
                     return (
                       <div
                         key={lengthTemplate.id}
-                        className="h-12 w-12 cursor-pointer"
+                        className={`h-12 w-12 cursor-pointer`}
                       >
                         {!lengthTemplate.templateUrl ? (
-                          <p className="h-12 w-12 cursor-pointer bg-gray-100 text-xs flex justify-center items-center">
+                          <p
+                            className={`h-[50px] w-[50px] cursor-pointer bg-gray-100 text-xs flex justify-center items-center border  p-[.1rem] ${
+                              isActive
+                                ? "border-green-100"
+                                : "border-transparent"
+                            }`}
+                            onClick={() => handleChangeStyle(lengthTemplate.id)}
+                          >
                             Default
                           </p>
                         ) : (
-                          <div>
+                          <div
+                            className={` w-[50px] h-[50px] first:ml-6 border  p-[.1rem] ${
+                              isActive
+                                ? " border-green-200"
+                                : "border-transparent"
+                            }`}
+                          >
                             <img
                               src={lengthTemplate?.templateUrl}
-                              className="h-full w-full first:ml-6"
+                              className="h-full w-full  "
                               onClick={() =>
                                 handleChangeStyle(lengthTemplate.id)
                               }
                             />
-                            <p className="text-[0.5rem] ml-6 ">
+                            <p className="text-[0.5rem] text-center">
                               {lengthTemplate?.title}
                             </p>
                           </div>
