@@ -1,40 +1,51 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
-
+import "./App.css";
 // Fetch product data
 async function fetchProduct() {
   return await axios.get("http://localhost:8080/products");
 }
 
 function App() {
-  const { data } = useQuery("product", fetchProduct);
+  const { data } = useQuery("product", fetchProduct, {
+    onSuccess: (data) => {
+      if (data?.data?.[0]) {
+        const product = data.data[0];
+        setCurrentStyle({
+          neckline: product?.necklineTemplates?.[0]?.resultUrl || "",
+          sleeve: product?.sleeveTemplates?.[0]?.resultUrl || "",
+          length: product?.lengthTemplates?.[0]?.resultUrl || "",
+        });
+        setActiveTemplateIds({
+          neckline: product?.necklineTemplates?.[0]?.id || "",
+          sleeve: product?.sleeveTemplates?.[0]?.id || "",
+          length: product?.lengthTemplates?.[0]?.id || "",
+        });
+      }
+    },
+  });
 
   // state to track whether customize modal is open or not
   const [isOpenCustomizeModal, setIsOpenCustomizeModal] = useState(false);
 
-  // state to track which style is active
-  const [activeStyle, setActiveStyle] = useState({
-    neckline: "",
-    sleeve: {
-      resultUrlR: "",
-      resultUrlL: "",
-    },
-    length: "",
-  });
-
-  // state to track which tamplate is active
+  // state to track which tamplate is active to add custom styles to the active template
   const [activeTemplateIds, setActiveTemplateIds] = useState({
     neckline: "",
     sleeve: "",
     length: "",
   });
 
-  const [changingPart, setChangingPart] = useState(null); // Track which part is changing
-  const [currentStyle, setCurrentStyle] = useState({}); // Store current styles
-  const [nextStyle, setNextStyle] = useState({}); // Store next styles
+  //state to track which part is changing
+  const [changingPart, setChangingPart] = useState(null);
 
-  // Function to handle the change style (like `neckline`, `sleeve`, etc.)
+  // state to track which style is currently active
+  const [currentStyle, setCurrentStyle] = useState({});
+
+  // state to store next styles
+  const [nextStyle, setNextStyle] = useState({});
+
+  // Function to handle the change style
   function handleChangeStyle(id) {
     const propertyToChange = id.split("-")[0];
     setChangingPart(propertyToChange);
@@ -43,58 +54,48 @@ function App() {
       (template) => template.id === id
     );
 
+    // Preload the new image
+    const newImage = new Image();
+    let nextImageUrl;
+
+    console.log({ newImage, nextImageUrl });
+
     if (propertyToChange === "sleeve") {
-      // Handle sleeve's specific structure
-      setNextStyle((prev) => ({
-        ...prev,
-        sleeve: {
-          resultUrlR: nextTemplate?.resultUrl?.resultUrlR || "",
-          resultUrlL: nextTemplate?.resultUrl?.resultUrlL || "",
-        },
-      }));
+      nextImageUrl = {
+        resultUrlR: nextTemplate?.resultUrl?.resultUrlR || "",
+        resultUrlL: nextTemplate?.resultUrl?.resultUrlL || "",
+      };
+      newImage.src = nextImageUrl.resultUrlR; // Preload one image first
     } else {
-      // Handle other parts like neckline and length
+      nextImageUrl = nextTemplate?.resultUrl || "";
+      newImage.src = nextImageUrl;
+    }
+
+    // Update the active template ids to add custom template style to the active template
+    setActiveTemplateIds((prev) => {
+      return {
+        ...prev,
+        [propertyToChange]: id,
+      };
+    });
+
+    // Wait until the new image is fully loaded
+    newImage.onload = () => {
       setNextStyle((prev) => ({
         ...prev,
-        [propertyToChange]: nextTemplate?.resultUrl || "",
+        [propertyToChange]: nextImageUrl,
       }));
-    }
 
-    setTimeout(() => {
-      setCurrentStyle((prev) => ({
-        ...prev,
-        [propertyToChange]:
-          propertyToChange === "sleeve"
-            ? {
-                resultUrlR: nextTemplate?.resultUrl?.resultUrlR || "",
-                resultUrlL: nextTemplate?.resultUrl?.resultUrlL || "",
-              }
-            : nextTemplate?.resultUrl || "",
-      }));
-      setChangingPart(null);
-    }, 200);
+      // Add a slight delay for the fade-in animation
+      setTimeout(() => {
+        setCurrentStyle((prev) => ({
+          ...prev,
+          [propertyToChange]: nextImageUrl,
+        }));
+        setChangingPart(null); // Reset changing part
+      }, 400); // Delay ensures animation triggers correctly
+    };
   }
-
-  // UseEffect to update state after data fetch
-  useEffect(() => {
-    if (data?.data?.[0]) {
-      const product = data.data[0];
-      setActiveStyle({
-        neckline: product?.necklineTemplates?.[0]?.resultUrl || "",
-        sleeve: {
-          resultUrlR: product.sleeveTemplates?.[0]?.resultUrl?.resultUrlR || "",
-          resultUrlL: product.sleeveTemplates?.[0]?.resultUrl?.resultUrlL || "",
-        },
-        length: product.lengthTemplates?.[0]?.resultUrl || "",
-      });
-
-      setActiveTemplateIds({
-        neckline: product?.necklineTemplates?.[0]?.id || "",
-        sleeve: product?.sleeveTemplates?.[0]?.id || "",
-        length: product?.lengthTemplates?.[0]?.id || "",
-      });
-    }
-  }, [data]);
 
   // Open modal
   const handleOpenCustomizeModal = (e) => {
@@ -143,38 +144,39 @@ function App() {
           >
             {/* model image  */}
             <div className="">
-              <div className="relative w-[376.8px] h-[560px] mx-auto">
-                <div className="flex h-full w-full">
+              <div className="relative w-[376.8px] h-[560px] mx-auto bg-white ">
+                <div className="flex h-full w-full bg-white">
                   {/* nickline */}
-                  <div className=" absolute w-[68.8px] h-[280px] left-[160px] top-0">
-                    <div className="w-full h-full relative">
+                  <div className=" absolute w-[68.8px] h-[280px] left-[160px] top-0  ">
+                    <div className="w-full h-full relative border-none stroke-none ">
                       <img
-                        src={currentStyle.neckline || activeStyle.neckline} // Fallback to activeStyle if currentStyle is empty
-                        className={`h-full w-full absolute z-10 ${
+                        loading="lazy"
+                        src={currentStyle.neckline}
+                        className={`h-full w-full absolute z-10   ${
                           changingPart === "neckline" ? "fade-out" : ""
                         }`}
                       />
                       <img
+                        loading="lazy"
                         src={nextStyle.neckline}
-                        className={`h-full w-full absolute  ${
+                        className={` w-full absolute  ${
                           changingPart === "neckline" ? "fade-in" : ""
                         }`}
                       />
                     </div>
                   </div>
                   {/* sleeve right  */}
-                  <div className="absolute w-[148px] h-[280px] left-[228.8px] top-0">
+                  <div className="absolute w-[148px] h-[280px] right-0 top-0  ">
                     <div className="w-full h-full relative">
                       <img
-                        src={
-                          currentStyle?.sleeve?.resultUrlR ||
-                          activeStyle.sleeve.resultUrlR
-                        } // Fallback to activeStyle if currentStyle is empty
-                        className={`h-full w-full absolute z-10 ${
+                        loading="lazy"
+                        src={currentStyle?.sleeve?.resultUrlR}
+                        className={` h-full w-full absolute z-10 ${
                           changingPart === "sleeve" ? "fade-out" : ""
                         }`}
                       />
                       <img
+                        loading="lazy"
                         src={nextStyle?.sleeve?.resultUrlR}
                         className={`h-full w-full absolute  ${
                           changingPart === "sleeve" ? "fade-in" : ""
@@ -184,20 +186,19 @@ function App() {
                   </div>
 
                   {/* sleeve left  */}
-                  <div className=" absolute w-[160px] h-[280px] left-0 top-0">
-                    <div className="w-full h-full relative">
+                  <div className="absolute w-[160px] h-[280px] left-0 top-0">
+                    <div className="w-full h-full relative  ">
                       <img
-                        src={
-                          currentStyle?.sleeve?.resultUrlL ||
-                          activeStyle.sleeve.resultUrlL
-                        } // Fallback to activeStyle if currentStyle is empty
-                        className={`h-full w-full absolute z-10 ${
+                        loading="lazy"
+                        src={currentStyle?.sleeve?.resultUrlL}
+                        className={`h-full w-full absolute z-10   ${
                           changingPart === "sleeve" ? "fade-out" : ""
                         }`}
                       />
                       <img
+                        loading="lazy"
                         src={nextStyle?.sleeve?.resultUrlL}
-                        className={`h-full w-full absolute ${
+                        className={`e h-full w-full absolute   ${
                           changingPart === "sleeve" ? "fade-in" : ""
                         }`}
                       />
@@ -205,15 +206,17 @@ function App() {
                   </div>
                 </div>
                 {/* length  */}
-                <div className="absolute  w-[376.8px] h-[280px] top-[279.2px] left-0 ">
-                  <div className="w-full h-full relative">
+                <div className="absolute  w-[376.8px] h-[280px] top-[279.2px] left-0   ">
+                  <div className="w-full h-full relative  ">
                     <img
-                      src={currentStyle.length || activeStyle.length} // Fallback to activeStyle if currentStyle is empty
-                      className={`h-full w-full absolute z-10 ${
+                      loading="lazy"
+                      src={currentStyle.length}
+                      className={`h-full w-full absolute z-10   ${
                         changingPart === "length" ? "fade-out" : ""
                       }`}
                     />
                     <img
+                      loading="lazy"
                       src={nextStyle.length}
                       className={`h-full w-full absolute ${
                         changingPart === "length" ? "fade-in" : ""

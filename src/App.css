@@ -1,0 +1,17 @@
+img {
+  display: block; /* Removes spacing below the image */
+  image-rendering: -webkit-optimize-contrast; /* Ensures sharp rendering */
+  transform: scale(1); /* Ensures no fractional scaling */
+}
+
+/* Fade-out effect (applies to the current image being replaced) */
+.fade-out {
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Fade-in effect (applies to the new image) */
+.fade-in {
+  opacity: 1;
+  transition: all 0.4s ease-in-out;
+}

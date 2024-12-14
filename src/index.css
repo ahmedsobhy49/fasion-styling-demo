@@ -1,15 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Fade-out effect (applies to the current image being replaced) */
-.fade-out {
-  opacity: 0;
-  transition: all 0.4s linear;
-}
-
-/* Fade-in effect (applies to the new image) */
-.fade-in {
-  opacity: 1;
-  transition: all 0.4s linear;
-}
